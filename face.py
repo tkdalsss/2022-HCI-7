@@ -2,11 +2,12 @@ import cv2
 import dlib
 from imutils import face_utils, resize
 import numpy as np
+import math
 
 detector = dlib.get_frontal_face_detector()
-predictor = dlib.shape_predictor('venv/Lib/shape_predictor_68_face_landmarks.dat')
+predictor = dlib.shape_predictor('./shape_predictor_68_face_landmarks.dat')
 
-orange = cv2.imread('C:\\Users\\lsm99\\Desktop\\orange.jpg')
+orange = cv2.imread('./orange.jpg')
 orange = cv2.resize(orange, (512, 512))
 
 cap = cv2.VideoCapture(0)
@@ -31,6 +32,14 @@ while cap.isOpened():
 
         shape = predictor(img, face)
         shape = face_utils.shape_to_np(shape)
+        
+        # shape에 얼굴 점마다 좌표가 찍히는것!
+        # # shape값 디버깅..
+        # print("#######################")
+        # print(shape)
+        # print(len(shape)) # 68개 나온다..랜드마크 0 ~ 67인듯
+        # print("@@@@@@@@@@@@@@@@@@@@@@@")
+        # shape[landmark_number, x(0) or y(1)]
 
         for p in shape:
             cv2.circle(face_img, (p[0] - x1, p[1] - y1), 2, 255, -1)
@@ -88,13 +97,48 @@ while cap.isOpened():
             (250, 350),
             cv2.MIXED_CLONE
         )
+        
+        # face line 구현한것
+        faceLine_x1 = shape[0, 0] #왼쪽 끝 x좌표
+        faceLine_y1 = shape[27, 1]#미간 y좌표
+        faceLine_x2 = shape[16, 0]#오른쪽 끝 x좌표
+        faceLine_y2 = shape[8, 1] #턱 y좌표
+        faceLine_margin = int((faceLine_x2 - faceLine_x1) * 0.02)
+              
+        faceLine_img = img[faceLine_y1 - faceLine_margin:faceLine_y2 + faceLine_margin, faceLine_x1 - faceLine_margin:faceLine_x2 + faceLine_margin].copy()
+        faceLine_img = resize(faceLine_img, 300)  
+
+        # face shape classification
+        # 얼굴 너비
+        face_left_x = shape[0, 0]
+        face_left_y = shape[0, 1]
+        face_right_x = shape[16, 0]
+        face_right_y = shape[16, 1]
+        
+        #너비 계산
+        tmp_face_width = (face_left_x-face_right_x)**2 + (face_left_y-face_right_y)**2
+        face_width = math.sqrt(tmp_face_width);
+        
+        # 얼굴 길이
+        face_top_x = shape[27, 0]
+        face_top_y = shape[27, 1]
+        face_bottom_x = shape[8, 0]
+        face_bottom_y = shape[8, 1]        
+        
+        #길이 계산
+        tmp_face_height = (face_top_x-face_bottom_x)**2 + (face_top_y-face_bottom_y)**2
+        face_height = math.sqrt(tmp_face_height);
+        
+        #결과 출력
+        print("----> User Face Width  =  {}" .format(face_width))
+        print("----> User Face Height =  {}" .format(face_height))
 
         cv2.imshow('left', left_eye)
         cv2.imshow('right', right_eye)
         cv2.imshow('mouth', mouth_img)
         cv2.imshow('face', face_img)
-
         cv2.imshow('result', result)
+        cv2.imshow('faceLine', faceLine_img)
 
     while True:
         key = cv2.waitKey(1) & 0xFF
