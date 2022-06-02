@@ -71,14 +71,15 @@ while cap.isOpened():
 
         left_eye_blur = cv2.GaussianBlur(left_eye, (5, 5), 0)
         right_eye_blur = cv2.GaussianBlur(right_eye, (5, 5), 0)
-
-        left_eye_sharpened =left_eye + (left_eye-left_eye_blur)
-        right_eye_sharpened = right_eye + (right_eye-right_eye_blur)
+        left_eye_sharpened=cv2.add(left_eye,6*cv2.subtract(left_eye,left_eye_blur))
+        right_eye_sharpened=cv2.add(right_eye,6*cv2.subtract(right_eye,right_eye_blur))
+        #left_eye_sharpened =left_eye + (left_eye-left_eye_blur)
+        #right_eye_sharpened = right_eye + (right_eye-right_eye_blur)
 
         result = cv2.seamlessClone(
             left_eye_sharpened,
             result,
-            np.full(left_eye_sharpened.shape[:2], 255, left_eye_sharpened.dtype),
+            np.full(left_eye.shape[:2], 255, left_eye.dtype),
             (300, 400),
             cv2.NORMAL_CLONE
             # cv2.MIXED_CLONE
@@ -87,7 +88,7 @@ while cap.isOpened():
         result = cv2.seamlessClone(
             right_eye_sharpened,
             result,
-            np.full(right_eye_sharpened.shape[:2], 255, right_eye_sharpened.dtype),
+            np.full(right_eye.shape[:2], 255, right_eye.dtype),
             (455, 400),
             cv2.NORMAL_CLONE
             # cv2.MIXED_CLONE
@@ -106,13 +107,13 @@ while cap.isOpened():
         mouth_img = resize(mouth_img, 150)
         mouth_img_blur = cv2.GaussianBlur(mouth_img, (5, 5), 0)
 
-        mouth_sharpened = mouth_img + (mouth_img - mouth_img_blur)
+        mouth_img_sharpened = cv2.add(mouth_img, 6 * cv2.subtract(mouth_img, mouth_img_blur))
 
 
         result = cv2.seamlessClone(
-            mouth_sharpened,
+            mouth_img_sharpened,
             result,
-            np.full(mouth_sharpened.shape[:2], 255, mouth_sharpened.dtype),
+            np.full(mouth_img.shape[:2], 255, mouth_img.dtype),
             (385, 550),
             # cv2.MIXED_CLONE
             cv2.NORMAL_CLONE
