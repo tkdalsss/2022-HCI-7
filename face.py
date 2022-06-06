@@ -129,9 +129,45 @@ while cap.isOpened():
         tmp_face_height = (face_top_x-face_bottom_x)**2 + (face_top_y-face_bottom_y)**2
         face_height = math.sqrt(tmp_face_height);
         
+        #턱의 각도 구하기 왼쪽 턱 3 4 5, 오른쪽 턱 11 12 13
+        left_top_x = shape[3,0]
+        left_top_y = shape[3,1]
+        
+        left_mid_x = shape[4,0]
+        left_mid_y = shape[4,1]
+        
+        left_bottom_x = shape[5,0]
+        left_bottom_y = shape[5,1]
+        
+        right_top_x = shape[13,0]
+        right_top_y = shape[13,1]
+        
+        right_mid_x = shape[12,0]
+        right_mid_y = shape[12,1]
+        
+        right_bottom_x = shape[11,0]
+        right_bottom_y = shape[11,1]
+        
+        def angle(top_x,top_y,mid_x,mid_y,bot_x,bot_y):
+            topLineSlope = (mid_y - top_y) / (mid_x - top_x) #기울기1 구하기
+            botLineSlope = (mid_y - bot_y) / (mid_x - bot_x) #기울기2 구하기
+            x = (abs(topLineSlope - botLineSlope)) / (1 + topLineSlope * botLineSlope) #x 구하기
+            angle_rad = np.arctan(x) #x의 arctan값 구하기 / 구하면 radian값이 나옴
+            angle_deg = np.degrees(angle_rad) #radian값을 degree값으로 바꿔줌
+            if angle_deg < 90: #교차각이 2개 나오므로, 90도보다 작은 각이 나오면 180도에서 이를 뺀 각을 교차각 최종값으로 정의
+                angle_result = 180 - angle_deg
+            else:
+                angle_result = angle_deg
+            return angle_result
+        
+        left_angle = angle(left_top_x,left_top_y,left_mid_x,left_mid_y,left_bottom_x,left_bottom_y)
+        right_angle = angle(right_top_x,right_top_y,right_mid_x,right_mid_y,right_bottom_x,right_bottom_y)
+        avg_angle = (left_angle + right_angle)/2
+        
         #결과 출력
         print("----> User Face Width  =  {}" .format(face_width))
         print("----> User Face Height =  {}" .format(face_height))
+        print("----> User Face Angle =  {}" .format(avg_angle))
 
         cv2.imshow('left', left_eye)
         cv2.imshow('right', right_eye)
