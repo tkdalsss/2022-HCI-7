@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor('./shape_predictor_68_face_landmarks.dat')
-emoji_path = './data/emoji_base/m11.png'
+emoji_path = './data/emoji_base/m'
 
 # emoji_base = cv2.resize(emoji_base, (512, 512))
 
@@ -22,7 +22,7 @@ while cap.isOpened():
     if not ret:
         break
     '''
-    img= cv2.imread('./data/photos/24.jpg')
+    img= cv2.imread('./data/photos/32.jpg')
 
     oh = img.shape[0]
     ow = img.shape[1]
@@ -240,6 +240,12 @@ while cap.isOpened():
         avg_angle = (left_angle + right_angle) / 2
 
         #이모지 생성부
+        if skin_ratio < 0.1:
+            emoji_path +='32.png'
+        elif skin_ratio <0.2:
+            emoji_path += '22.png'
+        else:
+            emoji_path += '12.png'
 
         emoji_base = cv2.imread(emoji_path)
         result = emoji_base.copy()
