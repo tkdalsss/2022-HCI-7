@@ -20,16 +20,15 @@ while cap.isOpened():
     ret, img = cap.read()
 
     if not ret:
-        beak
+        break
     '''
-    img= cv2.imread('./data/photos/test.jpg')
+    img= cv2.imread('./data/photos/24.jpg')
 
     oh = img.shape[0]
     ow = img.shape[1]
 
     rw = 512
     rh = int((rw*oh)/ow)
-    print(rw ,rh)
     img_resized = cv2.resize(img, dsize=(rw,rh),interpolation= cv2.INTER_LINEAR)
     cv2.imshow('video', img_resized)
     faces = detector(img_resized)
@@ -112,94 +111,77 @@ while cap.isOpened():
                        faceLine_x1 - faceLine_margin:faceLine_x2 + faceLine_margin].copy()
 
         faceLine_img = resize(faceLine_img, 300)
+
+        #원활한 이미지 색상 처리를 위해 hsv로 변환
         img_hsv =cv2.cvtColor(img_resized, cv2.COLOR_BGR2HSV)
+
         cv2.imshow('img_hsv',img_hsv)
         img_h, img_s, img_v = cv2.split(img_hsv)
         cv2.imshow('img_h',img_h)
         cv2.imshow('img_s',img_s)
         cv2.imshow('img_v',img_v)
+
         #피부 색깔 구하기
         only_face =img_hsv[faceLine_y1 + int((faceLine_x2 - faceLine_x1) * 0.02):faceLine_y2 - int((faceLine_x2 - faceLine_x1) * 0.2),
                        faceLine_x1 + int((faceLine_x2 - faceLine_x1) * 0.1):faceLine_x2 - int((faceLine_x2 - faceLine_x1) * 0.1)].copy()
 
         cv2.imshow('only',only_face)
         h,s,v =cv2.split(only_face)
-        median =np.array([np.percentile(h,55),np.percentile(s,55),np.percentile(v,55)]) #중간값을 통해 피부색 구함
+        median =np.array([np.percentile(h,55),np.percentile(s,55),np.percentile(v,55)]) #분위수 계산을 통해 피부색의 hsv를 구함
         #median = np.array([np.mean(b), np.mean(g), np.mean(r)])
-        print(median)
+        #print(median)
 
         #이마 영역 계산
 
-        upperHead_x1 = shape[0, 0]# 왼쪽 끝 x좌표+30
-        upperHead_x2 = shape[16, 0] # 오른쪽 끝 x좌표+30
-        upperHead_y2 = shape[27, 1]  # 미간 y 좌표
-
-        upperHead_hsv = img_hsv[int((faceLine_y2 - faceLine_y1) * 0.05): upperHead_y2 - int((faceLine_y2 - faceLine_y1) * 0.05) ,
+        upperHead_x1 = faceLine_x1 - int((faceLine_x2-faceLine_x1) * 0.25)
+        upperHead_x2 = faceLine_x2 + int((faceLine_x2-faceLine_x1) * 0.25)
+        upperHead_y1 = faceLine_y1 - (faceLine_y2 - faceLine_y1)
+        upperHead_y2 = faceLine_y1 - int((faceLine_y2 - faceLine_y1) * 0.05)
+        '''
+        upperHead_hsv = img_hsv[upperHead_y1-(upperHead_y2-upperHead_y1): upperHead_y1 - int((faceLine_y2 - faceLine_y1) * 0.05) ,
                        upperHead_x1 - int((upperHead_x2-upperHead_x1) * 0.25) : upperHead_x2 +  int((upperHead_x2-upperHead_x1) * 0.25)].copy()
-
+        '''
+        if upperHead_y1 < 0:
+            upperHead_y1 =0
+        upperHead_hsv = img_hsv[upperHead_y1:upperHead_y2,upperHead_x1:upperHead_x2].copy()
         cv2.imshow('upperHead_hsv', upperHead_hsv)
 
-
-        bottom = np.array([median[0] - 8 , median[1] - 70, median[2] - 100])
+        #마스크의 영역의 아랫값
+        bottom = np.array([median[0] - 10 , median[1] - 70, median[2] - 100])
+        #흰색 배경까지 인식되는 것을 막기 위해
         if median[0] - 8 <= 0:
             bottom[0] =1
-        top = np.array([median[0] + 8, median[1] + 70, median[2] + 70])
-        print(bottom)
-        print(top)
-        mask = cv2.inRange(upperHead_hsv, bottom, top) #위에서 구한 중간 값을 이용하여 적절한 마진을 더하고 빼 영역을 정함
-        cv2.imshow('mask', mask)
+        #마스크의 영역의 윗값
+        top = np.array([median[0] + 15, median[1] + 70, median[2] + 70])
+
+        mask = cv2.inRange(upperHead_hsv, bottom, top) #이마의 피부 영역만 추출하기 위한 마스크
+
         upperHead_bgr = cv2.cvtColor(cv2.bitwise_and(upperHead_hsv, upperHead_hsv, mask=mask), cv2.COLOR_HSV2BGR) #해당 영역에 포함되는 부분만 남기고 모두 0 값으로 변환 배경부가 살색과 유사하면 효과가 떨어진다./
         cv2.imshow('upperHead_bgr', upperHead_bgr)
         upperHead_gray = cv2.cvtColor(upperHead_bgr, cv2.COLOR_BGR2GRAY)
+        #모폴로지 연산을 통해 화이트 노이즈와 블랙 노이즈를 제거
         upperHead_gray = cv2.morphologyEx(upperHead_gray, cv2.MORPH_OPEN, np.ones((5, 5), np.uint8))
-        upperHead_gray = cv2.morphologyEx(upperHead_gray, cv2.MORPH_CLOSE, np.ones((5, 5), np.uint8))
+        upperHead_gray = cv2.morphologyEx(upperHead_gray, cv2.MORPH_CLOSE, np.ones((7, 7), np.uint8))
+
+
         '''
         upperHead_gray = cv2.cvtColor(upperHead2,cv2.COLOR_BGR2GRAY)
         ret, upperHead_bz= cv2.threshold(cv2.cvtColor(upperHead_hsv, cv2.COLOR_BGR2GRAY), 127, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
         upperHead_gray = cv2.morphologyEx(upperHead_gray, cv2.MORPH_OPEN, np.ones((3,3), np.uint8))
         upperHead_gray = cv2.morphologyEx(upperHead_gray, cv2.MORPH_CLOSE, np.ones((5,5), np.uint8))
         '''
+        #이마의 피부 영역과 upper_head와 피부 영역의 비율을 계산
         skin_area = 0
         skin_ratio =float(0)
         cv2.imshow('upperHead_gray', upperHead_gray)
         for r in upperHead_gray:
             skin_area += np.count_nonzero(r)
-        skin_ratio = skin_area/(upperHead_gray.shape[0]*upperHead_gray.shape[1])
+        upperHead_true_area =(faceLine_y2 - faceLine_y1-int((faceLine_y2 - faceLine_y1) * 0.05))*(faceLine_x2-faceLine_x1 + 2*int((faceLine_x2-faceLine_x1) * 0.25))
+        skin_ratio = skin_area/upperHead_true_area
+        #print(upperHead_true_area)
         print("----> User skin area  =  {}".format(skin_area))
         print("----> User skin ratio  =  {}".format(skin_ratio))
-        '''
-        # hair 영역 구하기
-        
-        hair_img = img_resized.copy()
-        hair_img[faceLine_y1 - int((faceLine_y2 - faceLine_y1) * 0.05): , :] = (255, 255, 255)
-        #hair_img[faceLine_y1 - hair_ymargin : , faceLine_x1 - faceLine_margin : faceLine_x2 + faceLine_margin] = (255, 255, 255)
-        #hair_img[faceLine_y2 - hair_ymargin : , :] = (255, 255, 255)
 
-        cv2.imshow('hair_img', hair_img)
-
-        hair_gray = cv2.cvtColor(hair_img,cv2.COLOR_BGR2GRAY)
-        mask = cv2.inRange(hair_gray, ret-40, ret+60)
-        hair_bz = cv2.bitwise_and(hair_gray,hair_gray,mask=mask)
-        hair_bz = cv2.morphologyEx(hair_bz, cv2.MORPH_OPEN, np.ones((7,7), np.uint8))
-        hair_bz = cv2.morphologyEx(hair_bz, cv2.MORPH_CLOSE, np.ones((9,9),np.uint8))
-
-        skin_area = 0
-        cv2.imshow('hair_bz', hair_bz)
-        for r in hair_bz:
-                skin_area += np.count_nonzero(r)
-
-        print(skin_area)
-        '''
-        '''
-        SE = 
-        hair_bz_inv=cv2.morphologyEx(hair_bz_inv,cv2.MORPH_CLOSE,SE)
-        contours, hierachy = cv2.findContours(hair_bz_inv, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-        cv2.drawContours(hair_bz_inv,contours,-1,(0,0,255),5)
-        c0 =contours[0]
-        M = cv2.moments(c0)
-     
-        print(cv2.contourArea(c0))
-        '''
         # face shape classification
         # 얼굴 너비
         face_left_x = shape[0, 0]
