@@ -1,0 +1,18 @@
+ms1
+----> User skin area  =  26818
+----> User skin ratio  =  0.3413653084863991
+----> User Face Width  =  259.0308861892728
+----> User Face Height =  213.11499243366245
+----> User Face Angle =  166.75099765499104
+msl2
+----> User skin area  =  23529
+----> User skin ratio  =  0.2790606653620352
+----> User Face Width  =  257.0
+----> User Face Height =  230.0
+----> User Face Angle =  162.82866955726416
+msl1
+----> User skin area  =  20926
+----> User skin ratio  =  0.25386080479431283
+----> User Face Width  =  259.01737393464555
+----> User Face Height =  224.03571143904713
+----> User Face Angle =  164.43864637586
