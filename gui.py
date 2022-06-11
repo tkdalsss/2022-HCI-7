@@ -47,7 +47,10 @@ def open():
     if panedwindow1.filename != "":
         IsImageSelected = True
         Label(panedwindow1, text=panedwindow1.filename).pack() # 파일경로 view
-        my_image = ImageTk.PhotoImage(Image.open(panedwindow1.filename))
+        
+        # 이미지 사이즈 조정
+        init_input_img = Image.open(panedwindow1.filename)
+        my_image = ImageTk.PhotoImage(init_input_img.resize((320,320)))
         Label(panedwindow1, image=my_image).pack() #사진 view
         imageLabel.pack_forget()
         
