@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor('venv/lib/shape_predictor_68_face_landmarks.dat')
 
-path = "C:\\Users\\lsm99\\Desktop\\03.jpg"
+path = "C:\\Users\\lsm99\\Desktop\\1111.jpg"
 
 cap = cv2.VideoCapture(path)
 
@@ -152,11 +152,11 @@ while cap.isOpened():
         print("----> User Face Angle =  {}".format(avg_angle))
 
         # 턱을 기준 으로 아래는 버리기
-        #tuck = shape[8, 1]
-        #dst_crop = dst[0: tuck, 0:600]
-        #cv2.imshow("cropped", dst_crop)
+        tuck = shape[8, 1]
+        dst_crop = dst[0: tuck, 0:600]
+        cv2.imshow("cropped", dst_crop)
 
-        dst_crop = dst
+        #dst_crop = dst
 
         dst_crop_1 = detector(dst_crop)
         dst_crop_2 = dst_crop_1[0]
@@ -229,7 +229,7 @@ while cap.isOpened():
         sub_img_gray = cv2.cvtColor(sub_img, cv2.COLOR_BGR2GRAY)
 
         # thresholding을 진행 하여 이진화 하고 면적 구하기
-        ret, thr = cv2.threshold(sub_img_gray, 145, 255, cv2.THRESH_BINARY_INV)
+        ret, thr = cv2.threshold(sub_img_gray, 100, 255, cv2.THRESH_BINARY_INV)
         cv2.imshow("binary", thr)
 
         # 긴머리와 짧은 머리를 구별하기 위해 이진화된 이미지에서의 픽셀 값 차이를 이용
@@ -274,15 +274,15 @@ while cap.isOpened():
         cv2.imshow('face', face_img)
         #cv2.imshow('faceLine', faceLine_img)
 
-        if pixel_cnt > 68000: # 장발일때
-            if area > 500: # 앞머리 없음
+        if pixel_cnt > 60000: # 장발일때
+            if area > 100: # 앞머리 없음
                 result = cv2.imread('./resource/02-02-01-01.png')
                 print("장발 가르마")
             else: # 앞머리 있음
                 result = cv2.imread('./resource/02-02-02-04.png')
                 print("장발 앞머리")
         else: # 단발일때
-            if area > 500: # 앞머리 없음
+            if area > 10: # 앞머리 없음
                 result = cv2.imread('./resource/02-01-01-01.png')
                 print("단발 가르마")
             else: # 앞머리 있음
