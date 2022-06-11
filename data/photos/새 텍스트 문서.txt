@@ -1,0 +1,69 @@
+포마드
+11
+----> User skin area  =  19096
+----> User skin ratio  =  0.2492462311557789
+----> User Face Width  =  257.00194551792794
+----> User Face Height =  209.02152999152983
+----> User Face Angle =  167.49155326094998 
+12
+----> User skin area  =  20549
+----> User skin ratio  =  0.32519385978794113
+----> User Face Width  =  237.21087664776252
+----> User Face Height =  187.09623192357455
+----> User Face Angle =  165.38718813927426
+13
+----> User skin area  =  12838
+----> User skin ratio  =  0.29889874508160463
+----> User Face Width  =  207.1955597979841
+----> User Face Height =  146.12323566086263
+----> User Face Angle =  159.01396855089888
+14
+----> User skin area  =  27943
+----> User skin ratio  =  0.2711438441235833
+----> User Face Width  =  304.2367499169027
+----> User Face Height =  237.05273674859777
+----> User Face Angle =  168.06963028557658
+가르마
+21
+----> User skin area  =  21804
+----> User skin ratio  =  0.15265700483091788
+----> User Face Width  =  353.01274764518064
+----> User Face Height =  284.17600180170035
+----> User Face Angle =  165.883595604898
+22
+----> User skin area  =  7320
+----> User skin ratio  =  0.10277290277290277
+----> User Face Width  =  257.0175091311874
+----> User Face Height =  194.164878389476
+----> User Face Angle =  163.61654929151825
+23
+----> User skin area  =  4170
+----> User skin ratio  =  0.1383818942058804
+----> User Face Width  =  165.01212076693034
+----> User Face Height =  128.00390619039717
+----> User Face Angle =  164.82318037880316
+24
+----> User skin area  =  11936
+----> User skin ratio  =  0.1905491698595147
+----> User Face Width  =  232.0021551624036
+----> User Face Height =  189.0026454841307
+----> User Face Angle =  164.8571964034301
+앞머리
+31
+----> User skin area  =  2105
+----> User skin ratio  =  0.03486946726742645
+----> User Face Width  =  229.10696191953662
+----> User Face Height =  185.09727172489605
+----> User Face Angle =  166.74030521802075
+32
+----> User skin area  =  3701
+----> User skin ratio  =  0.08803101660244518
+----> User Face Width  =  196.01020381602586
+----> User Face Height =  150.0133327407934
+----> User Face Angle =  163.1888926666993
+33
+----> User skin area  =  2749
+----> User skin ratio  =  0.0552340767530641
+----> User Face Width  =  211.0213259365034
+----> User Face Height =  166.02710622064097
+----> User Face Angle =  169.20392014000709
