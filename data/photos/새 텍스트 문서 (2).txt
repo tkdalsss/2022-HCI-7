@@ -16,3 +16,46 @@ msl1
 ----> User Face Width  =  259.01737393464555
 ----> User Face Height =  224.03571143904713
 ----> User Face Angle =  164.43864637586
+남자 배우
+----> User skin area  =  2105
+----> User skin ratio  =  0.03486946726742645
+----> User Face Width  =  229.10696191953662
+----> User Face Height =  185.09727172489605
+----> User Face Angle =  166.74030521802075
+
+----> User skin area  =  11936
+----> User skin ratio  =  0.1905491698595147
+----> User Face Width  =  232.0021551624036
+----> User Face Height =  189.0026454841307
+----> User Face Angle =  164.8571964034301
+
+----> User skin area  =  21804
+----> User skin ratio  =  0.15265700483091788
+----> User Face Width  =  353.01274764518064
+----> User Face Height =  284.17600180170035
+----> User Face Angle =  165.883595604898
+
+mw
+----> User skin area  =  35068
+----> User skin ratio  =  0.36620718462823726
+----> User Face Width  =  280.0017857085915
+----> User Face Height =  239.00209204105306
+----> User Face Angle =  161.43589660693613
+mw2
+----> User skin area  =  26491
+----> User skin ratio  =  0.3379385125653782
+----> User Face Width  =  260.0173071162764
+----> User Face Height =  211.00947846009194
+----> User Face Angle =  161.42027742616423
+mw3
+----> User skin area  =  24557
+----> User skin ratio  =  0.2694869684499314
+----> User Face Width  =  271.0073799733136
+----> User Face Height =  236.00211863455803
+----> User Face Angle =  161.30963261941503
+김정은
+----> User skin area  =  12838
+----> User skin ratio  =  0.29889874508160463
+----> User Face Width  =  207.1955597979841
+----> User Face Height =  146.12323566086263
+----> User Face Angle =  159.01396855089888
