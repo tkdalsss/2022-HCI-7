@@ -28,18 +28,18 @@ def make_emoji(input_image_path):
     faces = detector(img_resized)
 
 
-    cv2.imshow('video', img)
+    cv2.imshow('video', img_resized)
 
-    faces = detector(img)
-    dst = img.copy()
+    faces = detector(img_resized)
+    dst = img_resized.copy()
 
     if len(faces) > 0:
         face = faces[0]
 
         x1, y1, x2, y2 = face.left(), face.top(), face.right(), face.bottom()
-        face_img = img[y1:y2, x1:x2].copy()
+        face_img = img_resized[y1:y2, x1:x2].copy()
 
-        shape = predictor(img, face)
+        shape = predictor(img_resized, face)
         shape = face_utils.shape_to_np(shape)
 
         # shape에 얼굴 점마다 좌표가 찍히는것!
@@ -66,9 +66,9 @@ def make_emoji(input_image_path):
         right_y2 = shape[47, 1]
         right_margin = int((right_x2 - right_x1) * 0.18)
 
-        left_eye = img[left_y1 - left_margin:left_y2 + left_margin,
+        left_eye = img_resized[left_y1 - left_margin:left_y2 + left_margin,
                    left_x1 - left_margin:left_x2 + left_margin].copy()
-        right_eye = img[right_y1 - right_margin:right_y2 + right_margin,
+        right_eye = img_resized[right_y1 - right_margin:right_y2 + right_margin,
                     right_x1 - right_margin:right_x2 + right_margin].copy()
 
         left_eye = resize(left_eye, 95)
@@ -81,7 +81,7 @@ def make_emoji(input_image_path):
         mouth_y2 = shape[57, 1]
         mouth_margin = int((mouth_x2 - mouth_x1) * 0.1)
 
-        mouth_img = img[mouth_y1 - mouth_margin:mouth_y2 + mouth_margin,
+        mouth_img = img_resized[mouth_y1 - mouth_margin:mouth_y2 + mouth_margin,
                     mouth_x1 - mouth_margin:mouth_x2 + mouth_margin].copy()
 
         mouth_img = resize(mouth_img, 125)
@@ -93,7 +93,7 @@ def make_emoji(input_image_path):
         faceLine_y2 = shape[8, 1]  # 턱 y좌표
         faceLine_margin = int((faceLine_x2 - faceLine_x1) * 0.02)
 
-        faceLine_img = img[faceLine_y1 - faceLine_margin:faceLine_y2 + faceLine_margin,
+        faceLine_img = img_resized[faceLine_y1 - faceLine_margin:faceLine_y2 + faceLine_margin,
                        faceLine_x1 - faceLine_margin:faceLine_x2 + faceLine_margin].copy()
         faceLine_img = resize(faceLine_img, 300)
 
@@ -158,23 +158,23 @@ def make_emoji(input_image_path):
         dst_crop_1 = detector(dst_crop)
         dst_crop_2 = dst_crop_1[0]
 
-        shape2 = predictor(img, dst_crop_2)
+        shape2 = predictor(img_resized, dst_crop_2)
         shape2 = face_utils.shape_to_np(shape2)
 
         x1, y1, x2, y2 = dst_crop_2.left(), dst_crop_2.top(), dst_crop_2.right(), dst_crop_2.bottom()
-        dst_crop_img = img[y1:y2, x1:x2].copy()
+        dst_crop_img = img_resized[y1:y2, x1:x2].copy()
 
-        img = dst_crop
+        img_resized = dst_crop
 
         # 얼굴 부분을 추출하기 위해 선을 그리기
         landmark_tuple = []
         for k, d in enumerate(dst_crop_1):
-            landmarks = predictor(img, d)
+            landmarks = predictor(img_resized, d)
             for n in range(0, 27):
                 x = landmarks.part(n).x
                 y = landmarks.part(n).y
                 landmark_tuple.append((x, y))
-                cv2.circle(img, (x, y), 2, (255, 255, 0), -1)
+                cv2.circle(img_resized, (x, y), 2, (255, 255, 0), -1)
 
         routes = []
 
@@ -209,20 +209,20 @@ def make_emoji(input_image_path):
         for i in range(0, len(routes) - 1):
             from_coordinate = routes[i]
             to_coordinate = routes[i + 1]
-            img = cv2.line(img, from_coordinate, to_coordinate, (255, 255, 0), 1)
+            img_resized = cv2.line(img_resized, from_coordinate, to_coordinate, (255, 255, 0), 1)
 
         # for p in shape2:
         #    cv2.circle(img, (p[0] - x1, p[1] - y1), 2, 255, -1)
 
         # 얼굴만 따서 crop 이미지 에서 빼주기
-        mask = np.zeros((img.shape[0], img.shape[1]))
+        mask = np.zeros((img_resized.shape[0], img_resized.shape[1]))
         mask = cv2.fillConvexPoly(mask, np.array(routes), 1)
         mask = mask.astype(np.bool)
 
-        out = np.zeros_like(img)
-        out[mask] = img[mask]
+        out = np.zeros_like(img_resized)
+        out[mask] = img_resized[mask]
 
-        sub_img = cv2.subtract(img, out)
+        sub_img = cv2.subtract(img_resized, out)
         sub_img_gray = cv2.cvtColor(sub_img, cv2.COLOR_BGR2GRAY)
 
         # thresholding을 진행 하여 이진화 하고 면적 구하기
