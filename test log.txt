@@ -1,0 +1,96 @@
+test ml1
+----> User skin area  =  24486
+----> User skin ratio  =  0.2674896220231593
+algorithm A time : 2082500
+----> User skin area  =  96057
+---->contour area reuslt:  2.0
+algorithm B time : 402472300
+-----------------------------------
+test ml2
+----> User skin area  =  22922
+----> User skin ratio  =  0.2864891888513936
+algorithm A time : 1993800
+----> User skin area  =  89431
+---->contour area reuslt:  33.5
+algorithm B time : 330020700
+-----------------------------------
+test ml3
+----> User skin area  =  23949
+----> User skin ratio  =  0.30563567217131626
+algorithm A time : 1977500
+----> User skin area  =  83257
+---->contour area reuslt:  2.0
+algorithm B time : 315150000
+-----------------------------------
+test 11
+----> User skin area  =  19096
+----> User skin ratio  =  0.2492462311557789
+algorithm A time : 2000800
+----> User skin area  =  101654
+---->contour area reuslt:  4.0
+algorithm B time : 336241300
+-----------------------------------
+test 12
+----> User skin area  =  20549
+----> User skin ratio  =  0.32519385978794113
+algorithm A time : 2099100
+----> User skin area  =  82385
+!!!exception occur in algorithm B.!!!
+-----------------------------------
+test 13
+----> User skin area  =  12838
+----> User skin ratio  =  0.29889874508160463
+algorithm A time : 1996600
+----> User skin area  =  153693
+---->contour area reuslt:  2.0
+algorithm B time : 279704400
+-----------------------------------
+test 21
+----> User skin area  =  21804
+----> User skin ratio  =  0.15265700483091788
+algorithm A time : 2016400
+----> User skin area  =  178761
+---->contour area reuslt:  109.0
+algorithm B time : 478475500
+-----------------------------------
+test 22
+----> User skin area  =  7320
+----> User skin ratio  =  0.10277290277290277
+algorithm A time : 1609200
+----> User skin area  =  96750
+---->contour area reuslt:  2.0
+algorithm B time : 376587700
+-----------------------------------
+test 23
+----> User skin area  =  4170
+----> User skin ratio  =  0.1383818942058804
+algorithm A time : 467300
+----> User skin area  =  44858
+---->contour area reuslt:  2.0
+algorithm B time : 306579000
+-----------------------------------
+test 31
+----> User skin area  =  2105
+----> User skin ratio  =  0.03486946726742645
+algorithm A time : 2018400
+----> User skin area  =  85320
+---->contour area reuslt:  110.5
+algorithm B time : 299678500
+-----------------------------------
+test 32
+----> User skin area  =  3701
+----> User skin ratio  =  0.08803101660244518
+algorithm A time : 3001100
+----> User skin area  =  57469
+!!!exception occur in algorithm B.!!!
+-----------------------------------
+test 33
+----> User skin area  =  2749
+----> User skin ratio  =  0.0552340767530641
+algorithm A time : 1387000
+----> User skin area  =  69478
+---->contour area reuslt:  2.0
+algorithm B time : 319428800
+-----------------------------------
+
+
